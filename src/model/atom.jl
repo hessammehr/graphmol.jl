@@ -14,8 +14,8 @@ export
     markup,
     html
 
-
-import YAML
+using StaticArrays
+using YAML
 
 const PERIODIC_TABLE = YAML.load(open(
     joinpath(dirname(@__FILE__), "..", "..", "assets", "const", "periodictable.yaml")
@@ -43,7 +43,7 @@ mutable struct Atom <: Node
     patty::UInt8
     smiles_aromatic::Bool
     smiles_stereo::String
-    coords::Tuple
+    coords::SVector{3}
     visible::Bool
 
     function Atom(symbol::AbstractString)

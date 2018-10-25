@@ -3,9 +3,6 @@
 # Licensed under the MIT License http://opensource.org/licenses/MIT
 #
 
-using Statistics
-using Printf
-
 export
     Canvas,
     Color,
@@ -16,6 +13,9 @@ export
     coordsvector,
     booundary,
     sizeunit
+
+using Statistics
+using Printf
 
 
 abstract type Canvas end
@@ -63,7 +63,7 @@ end
 
 function double_bond_along_ring!(mol::MolecularGraph)
     for ring in sort(mol.rings, by=length, rev=true)
-        vtcs = [point2d(getatom(mol, n).coords[1:2]) for n in ring.arr]
+        vtcs = [getatom(mol, n).coords[1:2] for n in ring.arr]
         cw = isclockwise(vtcs)
         if cw === nothing
             continue
@@ -105,8 +105,8 @@ end
 function sizeunit(mol::MolecularGraph, coords::Matrix{Float32})
     dists = []
     for bond in bondvector(mol)
-        upos = point2d(coords[atompos(mol, bond.u), :])
-        vpos = point2d(coords[atompos(mol, bond.v), :])
+        upos = coords[atompos(mol, bond.u), :]
+        vpos = coords[atompos(mol, bond.v), :]
         d = distance(upos, vpos)
         if d > 0  # Remove overlapped
             push!(dists, d)
